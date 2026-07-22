@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi cumpleaños Zohe Alessandra</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel&family=Herr+Von+Muellerhoff&family=Roboto:wght@300;400&display=swap"
+        rel="stylesheet" />
+
+    <!-- Open Graph Meta -->
+    <meta property="og:title" content="Mi cumpleaños Zohe Alessandra">
+    <meta property="og:description" content="¡Te invito a celebrar Mi cumpleaños!">
+    <meta property="og:image" content="assets/zoheimg/1.jpeg">
+    <meta property="og:type" content="website">
+</head>
+
+<body>
+    <style>
+        /* Ocultar el contenido principal al cargar */
+        #content {
+            display: none;
+        }
+
+        /* Estilo del contenedor del loader */
+        #loader {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            /* Cambia el color si es necesario */
+            z-index: 9999;
+        }
+
+        #colod {
+            color: white;
+        }
+
+        #colod2 {
+            color: rgb(242, 59, 126);
+            text-align: center;
+        }
+
+        .loader1 {
+            margin-top: -20px;
+        }
+    </style>
+    <div id="loader">
+        <div>
+            <h1 class="subtitle" id="colod2">Mi Cumpleaños</h1>
+            <h1 class="title" id="colod2">Zohe Alessandra</h1>
+        </div>
+        <div class="loader1">
+            <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+                type="module"></script>
+            <dotlottie-player src="https://lottie.host/d26dab08-c803-4896-95a8-6418b6055863/Fr4aUzh5Y4.lottie"
+                background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('load', function () {
+            // Mantén el loader visible durante un tiempo fijo
+            setTimeout(function () {
+                // Oculta el loader
+                document.getElementById('loader').style.display = 'none';
+                // Muestra el contenido principal
+                document.getElementById('content').style.display = 'block';
+            }, 3000); // 3000 milisegundos = 3 segundos
+        });
+    </script>
+    <script>
+        // Lista de colores estilo confeti (rosados destacados para fondo blanco)
+        const confettiColors = [
+            '#FF69B4', // Hot Pink
+            '#FFB6C1', // Light Pink
+            '#FF4F81', // Vivid Pink
+            '#FF85A1', // Soft Pink
+            '#FF1493', // Deep Pink
+            '#FFC0CB', // Pink
+            '#F06292', // Pink Accent
+            '#E75480', // Dark Pink
+            '#FF6F91', // Pastel Pink
+            '#F9A9B5'  // Custom Pink (coincide con tu diseño)
+        ];
+
+        // Función para obtener un color aleatorio
+        const getRandomConfettiColor = () => {
+            return confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        };
+
+        // Función para cambiar el color dinámicamente
+        const startColorCycling = (el) => {
+            setInterval(() => {
+                el.style.backgroundColor = getRandomConfettiColor();
+            }, 1000 + Math.random() * 2000); // Cambia cada 1 a 3 segundos
+        };
+
+        const createFireflies = (count, isBackground = false) => {
+            const group = [];
+
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.classList.add('firefly');
+                el.classList.add(isBackground ? 'background-firefly' : 'foreground-firefly');
+
+                // Color inicial
+                el.style.backgroundColor = getRandomConfettiColor();
+                startColorCycling(el); // Animar color
+
+                document.body.appendChild(el);
+
+                group.push({
+                    el,
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    dx: (Math.random() - 0.5) * (isBackground ? 0.3 : 0.7),
+                    dy: (Math.random() - 0.5) * (isBackground ? 0.3 : 0.7),
+                    scale: isBackground
+                        ? Math.random() * 0.3 + 0.3
+                        : Math.random() * 0.5 + 0.7,
+                    opacity: isBackground
+                        ? Math.random() * 0.3 + 0.2
+                        : Math.random() * 0.5 + 0.5,
+                    speedFactor: isBackground ? 0.5 : 1
+                });
+            }
+
+            return group;
+        };
+
+        const backgroundFlies = createFireflies(30, true);
+        const foregroundFlies = createFireflies(30, false);
+        const fireflies = [...backgroundFlies, ...foregroundFlies];
+
+        let scrollY = 0;
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+        });
+
+        window.addEventListener('touchstart', (e) => {
+            const touchX = e.touches[0].clientX;
+            const touchY = e.touches[0].clientY;
+
+            fireflies.forEach(f => {
+                const dx = f.x - touchX;
+                const dy = f.y - touchY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    f.dx += dx / dist * 0.5;
+                    f.dy += dy / dist * 0.5;
+                }
+            });
+        });
+
+        function animate() {
+            fireflies.forEach(f => {
+                f.x += f.dx * f.speedFactor;
+                f.y += f.dy * f.speedFactor + scrollY * 0.0005;
+
+                // Rebote de bordes
+                if (f.x < 0 || f.x > window.innerWidth) f.dx *= -1;
+                if (f.y < 0 || f.y > window.innerHeight) f.dy *= -1;
+
+                f.el.style.transform = `translate(${f.x}px, ${f.y}px) scale(${f.scale})`;
+                f.el.style.opacity = `${f.opacity + Math.sin(Date.now() * 0.002 + f.x) * 0.2}`;
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+
+    <div id="content">
+
+        <div class="parentwind">
+            <img class="ballon blue1" src="./assets/pink.webp" />
+            <img class="ballon yellow1" src="./assets/yellow.png" />
+            <img class="ballon green1" src="./assets/green.png" />
+            <img class="ballon yellow2" src="./assets/yellow.png" />
+            <img class="ballon blue2" src="./assets/pink.webp" />
+            <img class="ballon green2" src="./assets/green.png" />
+            <img class="ballon yellow3" src="./assets/yellow.png" />
+            <img class="ballon blue3" src="./assets/pink.webp" />
+        </div>
+    </div>
+
+    <style>
+        .ballon {
+            position: absolute;
+            width: 75px;
+            height: 155.5px;
+            bottom: 0;
+            transform-origin: 37.5px 0px;
+            opacity: 0;
+            animation-name: float;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            will-change: transform, opacity;
+        }
+
+        /* Globos individuales */
+        .yellow1 {
+            animation-duration: 12s;
+            animation-delay: 0s;
+            left: 5%;
+            width: 155px;
+        }
+
+        .yellow2 {
+            animation-duration: 14s;
+            animation-delay: 2s;
+            left: 20%;
+            width: 155px;
+        }
+
+        .yellow3 {
+            animation-duration: 10s;
+            animation-delay: 4s;
+            left: 35%;
+            width: 155px;
+        }
+
+        .green1 {
+            animation-duration: 13s;
+            animation-delay: 1s;
+            left: 50%;
+            width: 135px;
+        }
+
+        .green2 {
+            animation-duration: 11s;
+            animation-delay: 3s;
+            left: 65%;
+            width: 135px;
+        }
+
+        .blue1 {
+            animation-duration: 15s;
+            animation-delay: 0s;
+            left: 75%;
+            width: 55px;
+        }
+
+        .blue2 {
+            animation-duration: 10s;
+            animation-delay: 2s;
+            left: 85%;
+            width: 55px;
+        }
+
+        .blue3 {
+            animation-duration: 12s;
+            animation-delay: 5s;
+            left: 95%;
+            width: 55px;
+        }
+
+        .wind {
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .parentwind {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            bottom: 0;
+            z-index: 0;
+            animation: wind 10s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotate(5deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-400vh) rotate(-5deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes wind {
+            0% {
+                transform: translateX(0px);
+            }
+
+            10% {
+                transform: translateX(10px);
+            }
+
+            30% {
+                transform: translateX(-5px);
+            }
+
+            66% {
+                transform: translateX(3px);
+            }
+
+            86% {
+                transform: translateX(-10px);
+            }
+
+            100% {
+                transform: translateX(0px);
+            }
+        }
+    </style>
+    </div>
+
+    <section class="section">
+        <h1 class="subtitle reveal" id="jireh">Zohe Alessandra</h1>
+        <p class="title reveal-left">¡Mi cumpleaños!</p>
+        <img src="assets/zoheimg/1.jpeg" alt="Zohe Alessandra en su sesión de cumpleaños" class="quote-image fra image-reveal zohe-photo" id="BW" />
+        <p class="subtitle reveal-left">TU PRESENCIA ES ALTAMENTE APRECIADA EN ESTE MOMENTO TAN ESPECIAL.
+        </p>
+        <p class="subtitle reveal-left" style="margin-bottom: 0px;">08 de agosto, 2026</p>
+        <div id="countdown" class="subtitle reveal-left"></div>
+        </div>
+        <script>
+            function updateCountdown() {
+                const targetDate = new Date("august 8, 2026 00:00:00").getTime();
+                const now = new Date().getTime();
+                const difference = targetDate - now;
+
+                if (difference <= 0) {
+                    document.getElementById("countdown").innerHTML = "¡Ya comenzó la celebración!";
+                    return;
+                }
+
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML =
+                    `${days} días ${hours}h ${minutes}m ${seconds}s`;
+            }
+
+            updateCountdown(); // Ejecuta al cargar
+            setInterval(updateCountdown, 1000); // Actualiza cada segundo
+        </script>
+        <div id="countdown" class="subtitle reveal-left"></div>
+    </section>
+
+    <div class="card">
+        <h1 class="title reveal">¡Mi Cumpleaños!</h1>
+        <p class="subtitle reveal-left">
+            <span class="highlight subtitle">Hola, soy Zohe Alessandra</span> y estoy emocionada porque celebro mi
+            cumpleaños.
+        </p>
+        <p class="subtitle reveal-left">
+            Quiero compartir este día tan especial contigo, rodeados de alegría, cariño y muchas sonrisas.
+        </p>
+        <p class="footer text image-reveal">
+            ¡Te esperamos para celebrar juntos y crear recuerdos inolvidables!
+        </p>
+        <img src="assets/zoheimg/2.jpeg" alt="Zohe Alessandra con vestido blanco" id="lu" class="quote-image fra image-reveal zohe-photo" />
+
+    </div>
+
+    <img src="./assets/2.gif" alt="Rosa decorativa" id="di" class="decorative-rose reveal" />
+    <img src="./assets/zoheimg/minnie.webp" alt="Minnie Mouse" class="minnie-character image-reveal" />
+    <section class="section">
+        <h1 class="title reveal">Celebración</h1>
+        <p class="text">La celebración se llevará a cabo el sábado 08 de agosto de 2026.<br><br>Dirección:
+            Calle Tres #169, casa 12, La Molina</p>
+
+    </section>
+    <img src="./assets/zoheimg/3.jpeg" alt="Zohe Alessandra recién nacida" id="car" class="decorative-rose reveal zohe-photo" />
+    <div class="vestimenta-container reveal">
+        <div class="header">
+            <div class="divider1"></div>
+            <div class="totens">
+                <div class="toten3"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="80px" height="80px"
+                        viewBox="0 0 1280.000000 1280.000000" preserveAspectRatio="xMidYMid meet">
+                        <metadata>
+                            Created by potrace 1.15, written by Peter Selinger 2001-2017
+                        </metadata>
+                        <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="#F9A9B5"
+                            stroke="none">
+                            <path d="M6335 12360 c-516 -49 -1002 -220 -1425 -502 -175 -116 -281 -200
+                                -419 -333 -193 -185 -350 -375 -478 -579 -474 -754 -590 -1678 -313 -2516 26
+                                -80 241 -676 478 -1325 1892 -5186 2434 -6670 2436 -6672 2 -2 204 547 449
+                                1219 245 673 890 2440 1433 3928 542 1488 1004 2757 1026 2820 328 963 133
+                                2036 -516 2840 -100 125 -313 336 -446 443 -441 355 -936 572 -1505 658 -157
+                                23 -560 34 -720 19z m498 -1415 c381 -67 721 -314 901 -654 158 -301 190 -666
+                                85 -986 -153 -465 -564 -804 -1051 -865 -295 -37 -607 38 -861 207 -95 63
+                                -249 213 -320 310 -238 331 -301 753 -172 1140 65 195 159 347 305 493 184
+                                185 418 308 673 355 102 18 333 18 440 0z" />
+                        </g>
+                    </svg>
+                    <p class="vendimiatext subtitle reveal-left">Ubicación</p>
+                </div>
+                <div class="toten3a"><a class="b2" href="https://www.google.com/maps/search/?api=1&amp;query=Calle+Tres+169,+La+Molina,+Lima"
+                        target="_blank">¿Cómo
+                        llegar?</a>
+                </div>
+                <div class="confirmation-block reveal">
+                    <p class="vendimiatext subtitle">Confirma tu asistencia</p>
+                    <a class="confirmation-button"
+                        href="https://wa.me/51987725827?text=Hola%2C%20confirmo%20mi%20asistencia%20al%20cumplea%C3%B1os%20de%20Zohe%20Alessandra."
+                        target="_blank" rel="noopener">Confirmar por WhatsApp</a>
+                </div>
+                <img src="./assets/perlas.png" alt="Rosa decorativa" id="rana" class="decorative-rose reveal"
+                    data-gc-noneditable="branding"
+                    style="margin-top: 25px;" />
+            </div>
+            <footer>
+                <div id="ron">Desarrollado con <span class="heartfooter">♡</span></div>
+                <div class="footergitfclick">
+                    <p>
+                        por <a href="https://www.facebook.com/giftclickbo" target="_blank" id="footerlink">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="933" height="533" fill="none"
+                                viewBox="0 0 933 533" id="svggiftclick">
+                                <path fill="#ffffff"
+                                    d="M369.803 254.18H157.219A17.254 17.254 0 0 1 140 236.959v-12.18a17.255 17.255 0 0 1 17.219-17.221h212.584a17.255 17.255 0 0 1 17.219 17.221v12.18a17.254 17.254 0 0 1-17.219 17.221Zm-212.602-35.253a5.886 5.886 0 0 0-5.886 5.887v12.145a5.888 5.888 0 0 0 5.886 5.887h212.602a5.886 5.886 0 0 0 5.887-5.887v-12.18a5.888 5.888 0 0 0-5.887-5.887l-212.602.035Z" />
+                                <path fill="#ffffff"
+                                    d="M258.629 216.847c-1.235 0-2.461-.203-3.63-.599-23.652-8.003-52.627-21.575-56.275-40.77-1.762-9.183 2.379-18.067 12.231-26.44 9.852-8.372 19.281-10.928 28.023-7.667 18.294 6.804 26.789 37.738 30.702 62.503a11.234 11.234 0 0 1-6.354 11.925 11.225 11.225 0 0 1-4.679 1.048h-.018Zm-.158-11.21 5.604-.899-5.604.899ZM231.593 151.4c-3.877 0-8.336 2.116-13.306 6.311-6.521 5.517-9.341 10.769-8.424 15.634 1.956 10.294 20.567 22.58 48.572 32.08-4.653-29.312-13.606-49.777-23.405-53.425a9.799 9.799 0 0 0-3.437-.6Z" />
+                                <path fill="#ffffff"
+                                    d="M270.014 216.847a11.225 11.225 0 0 1-11.032-12.973c3.895-24.677 12.337-55.682 30.701-62.503 8.812-3.243 18.171-.67 28.023 7.668 9.852 8.337 13.976 17.238 12.231 26.439-3.648 19.195-32.622 32.767-56.274 40.77a11.319 11.319 0 0 1-3.649.599Zm27.054-65.447a9.803 9.803 0 0 0-3.437.6c-9.799 3.648-18.77 24.095-23.405 53.425 28.023-9.5 46.616-21.786 48.573-32.08.916-4.865-1.904-10.117-8.425-15.634-4.97-4.195-9.429-6.311-13.306-6.311ZM406.021 348.005c0-8.813.635-15.441 2.009-19.671 3.702-11.422 13.324-17.45 26.437-17.45 12.795 0 22.101 6.134 25.59 15.335.318.74.212 1.269-.423 1.586l-11.314 4.759c-.741.212-1.269 0-1.481-.529a13.48 13.48 0 0 0-12.337-7.403c-6.027 0-9.834 2.644-11.526 8.038-.74 2.327-1.163 7.403-1.163 15.335 0 7.932.423 13.114 1.163 15.44 1.692 5.288 5.604 7.932 11.738 7.932 5.498 0 10.151-2.749 11.526-7.403a26.44 26.44 0 0 0 .846-7.05.56.56 0 0 0-.635-.635h-9.728c-.74 0-1.058-.317-1.058-1.058v-10.152c0-.741.318-1.058 1.058-1.058h24.674c.74 0 1.057.317 1.057 1.058v5.922c.193 5.45-.4 10.9-1.762 16.181-3.525 11.422-13.43 17.979-26.225 17.979-13.113 0-22.735-6.028-26.437-17.45-1.374-4.266-2.009-10.893-2.009-19.706ZM475.179 324.632c-.74 0-1.057-.317-1.057-1.057v-10.471c0-.74.317-1.057 1.057-1.057h12.69c.74 0 1.057.317 1.057 1.057v10.471c0 .74-.317 1.057-1.057 1.057h-12.69Zm0 59.33c-.74 0-1.057-.317-1.057-1.057v-49.001c0-.741.317-1.058 1.057-1.058h12.69c.74 0 1.057.317 1.057 1.058v49.071c0 .74-.317 1.058-1.057 1.058l-12.69-.071ZM505.211 383.962c-.74 0-1.058-.317-1.058-1.057v-38.602a.556.556 0 0 0-.16-.474.558.558 0 0 0-.474-.16h-3.172c-.741 0-1.058-.318-1.058-1.058v-8.813c0-.741.317-1.058 1.058-1.058h3.172a.57.57 0 0 0 .474-.16.558.558 0 0 0 .16-.474v-2.433c0-12.338 5.711-17.626 17.977-17.626h5.816c.741 0 1.058.317 1.058 1.057v9.942c0 .74-.317 1.057-1.058 1.057h-3.278c-4.653 0-5.816 1.164-5.816 5.5v2.538a.57.57 0 0 0 .16.474.562.562 0 0 0 .475.16h8.354c.74 0 1.057.318 1.057 1.058v8.813c0 .74-.317 1.058-1.057 1.058h-8.354a.57.57 0 0 0-.475.16.556.556 0 0 0-.16.474v38.602c0 .74-.317 1.058-1.057 1.058l-12.584-.036ZM555.44 384.597c-11.738 0-16.285-5.182-16.285-17.027v-23.267a.556.556 0 0 0-.16-.474.558.558 0 0 0-.474-.16h-3.173c-.74 0-1.057-.318-1.057-1.058v-8.813c0-.741.317-1.058 1.057-1.058h3.173a.558.558 0 0 0 .61-.378.557.557 0 0 0 .024-.256v-13.749c0-.74.318-1.057 1.058-1.057h12.584c.74 0 1.057.317 1.057 1.057v13.749a.57.57 0 0 0 .378.61.57.57 0 0 0 .256.024h6.557c.74 0 1.057.317 1.057 1.058v8.813c0 .74-.317 1.058-1.057 1.058h-6.557a.557.557 0 0 0-.474.16.57.57 0 0 0-.16.474v22.632c0 3.808 1.269 5.077 4.653 5.077h2.538c.74 0 1.057.317 1.057 1.057v10.47c0 .741-.317 1.058-1.057 1.058h-5.605ZM571.408 348.004c0-8.989.634-15.546 2.009-19.388 3.807-11.528 12.901-17.627 25.59-17.627 12.161 0 20.938 5.817 25.062 15.97.317.634.212 1.057-.529 1.269l-11.526 5.182a.951.951 0 0 1-1.48-.529c-2.327-5.393-6.134-8.143-11.421-8.143a10.397 10.397 0 0 0-10.786 7.932c-.74 2.432-1.163 7.509-1.163 15.44 0 7.932.423 13.008 1.163 15.441a10.4 10.4 0 0 0 10.786 7.932c5.287 0 9.094-2.75 11.421-8.144a.95.95 0 0 1 1.48-.528l11.526 5.182c.741.211.846.634.529 1.269-4.124 10.153-12.901 15.969-25.062 15.969-12.689 0-21.783-6.134-25.59-17.626-1.375-4.054-2.009-10.611-2.009-19.601ZM649.554 384.597c-11.315 0-15.862-4.865-15.862-16.287v-55.206c0-.74.317-1.057 1.058-1.057h12.689c.74 0 1.058.317 1.058 1.057v54.043c0 3.278 1.48 4.865 4.441 4.865h2.221c.74 0 1.057.317 1.057 1.057v10.47c0 .741-.317 1.058-1.057 1.058h-5.605ZM667.108 324.632c-.74 0-1.058-.317-1.058-1.057v-10.471c0-.74.318-1.057 1.058-1.057h12.689c.741 0 1.058.317 1.058 1.057v10.471c0 .74-.317 1.057-1.058 1.057h-12.689Zm0 59.33c-.74 0-1.058-.317-1.058-1.057v-49.001c0-.741.318-1.058 1.058-1.058h12.689c.741 0 1.058.317 1.058 1.058v49.071c0 .74-.317 1.058-1.058 1.058l-12.689-.071ZM693.227 370.637a48.211 48.211 0 0 1 0-24.536c2.961-9.412 11.103-14.489 22.101-14.489a22.704 22.704 0 0 1 19.387 9.624 1.054 1.054 0 0 1 .208.785 1.048 1.048 0 0 1-.42.696l-9.2 6.028a1.061 1.061 0 0 1-1.265.104 1.063 1.063 0 0 1-.321-.316 9.682 9.682 0 0 0-8.142-4.441 7.454 7.454 0 0 0-7.931 5.499 40.933 40.933 0 0 0 0 17.626 7.453 7.453 0 0 0 7.931 5.464 9.676 9.676 0 0 0 8.142-4.442 1.06 1.06 0 0 1 1.586-.211l9.2 6.028a1.048 1.048 0 0 1 .42.696 1.045 1.045 0 0 1-.208.785 22.704 22.704 0 0 1-19.387 9.624c-10.998-.036-19.14-5.112-22.101-14.524ZM778.141 383.962a1.751 1.751 0 0 1-.948-.296 1.751 1.751 0 0 1-.638-.761l-11.421-20.623-5.287 6.557v14.101c0 .74-.317 1.058-1.058 1.058H746.1c-.74 0-1.058-.318-1.058-1.058v-69.8c0-.741.318-1.058 1.058-1.058h12.689c.741 0 1.058.317 1.058 1.058v38.778l14.699-18.085a2.548 2.548 0 0 1 2.009-1.058h13.535a.619.619 0 0 1 .423 1.058l-15.65 18.085 17.871 30.987c.211.423.106 1.057-.529 1.057h-14.064ZM359.564 242.828H168.639a21.874 21.874 0 0 0-21.854 21.857v106.234a21.868 21.868 0 0 0 21.854 21.856h190.925a21.868 21.868 0 0 0 21.854-21.856V264.614a21.872 21.872 0 0 0-21.854-21.786ZM334.89 351.301l16.937 30.194h-9.359l-15.139-29.666a7.478 7.478 0 0 0-5.288-3.983 7.624 7.624 0 0 0-1.374-.124 7.456 7.456 0 0 0-5.164 2.045l-4.776 4.354v-48.42l34.138 34.372h-3.525a7.528 7.528 0 0 0-6.398 3.779 7.525 7.525 0 0 0-.035 7.431l-.017.018Zm35.142 19.618a10.577 10.577 0 0 1-5.816 9.394l-16.302-29.065 6.168-.106a7.524 7.524 0 0 0 7.332-8.99 7.522 7.522 0 0 0-2.044-3.842l-46.987-47.309a7.523 7.523 0 0 0-12.865 5.288v66.31a7.526 7.526 0 0 0 12.601 5.57l7.473-6.804 10.222 20.041H168.639a10.575 10.575 0 0 1-10.574-10.576V264.526a10.575 10.575 0 0 1 10.574-10.576h190.925a10.576 10.576 0 0 1 10.574 10.576l-.106 106.393Z" />
+                                <path fill="#ffffff"
+                                    d="m356.303 378.551-17.377-30.97a1.624 1.624 0 0 1 .009-1.603 1.625 1.625 0 0 1 1.383-.811l11.015-.194a1.624 1.624 0 0 0 1.482-1.01 1.625 1.625 0 0 0-.354-1.758l-41.223-41.51a1.626 1.626 0 0 0-1.78-.37 1.627 1.627 0 0 0-1.005 1.516v58.167a1.617 1.617 0 0 0 .967 1.484 1.617 1.617 0 0 0 1.747-.285l9.799-8.937a1.63 1.63 0 0 1 1.383-.399 1.623 1.623 0 0 1 1.155.857l14.664 28.749h16.108l1.34-.705a1.626 1.626 0 0 0 .687-2.221Z" />
+                            </svg>
+                        </a>
+                    </p>
+                </div>
+                <p class="footnumber">Invitaciones virtuales<br><span>+51 967707229</span></p>
+            </footer>
+        </div>
+
+    </div>
+</body>
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("active");
+            } else {
+                entry.target.classList.remove("active"); // opcional para repetir animación
+            }
+        });
+    }, { threshold: 0.1 });
+
+    // Animaciones para textos
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach((el) => {
+        observer.observe(el);
+    });
+
+    // Animaciones para imágenes con efecto reveal
+    document.querySelectorAll('.image-reveal').forEach((el, index) => {
+        el.style.setProperty('--delay', `${index * 0.8}s`);
+        observer.observe(el);
+    });
+</script>
+<div id="music-player-bar">
+    <div id="player-content">
+        <div id="track-info">
+            <div id="track-title">Mi Canción</div>
+            <div id="track-controls">
+                <button id="play-btn" style="padding-right: -8px !important;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                </button>
+                <button id="pause-btn" style="padding-right: 5px !important;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none">
+                        <line x1="10" y1="4" x2="10" y2="20"></line>
+                        <line x1="18" y1="4" x2="18" y2="20"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="progress-container">
+            <div id="progress-bar">
+                <div id="progress-current"></div>
+            </div>
+            <div id="time-display">00:00</div>
+        </div>
+    </div>
+</div>
+<style>
+    #music-player-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 95%;
+        background: rgba(251, 106, 186, 0.55);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        padding: 7px 0px;
+        z-index: 1000;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        border-radius: 40px;
+        margin: 3%;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    #player-content {
+        max-width: 800px;
+        margin: 5px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 0 40px;
+    }
+
+    #track-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #track-title {
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        position: relative;
+        padding-left: 28px;
+    }
+
+    #track-title::before {
+        content: "♪";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 24px;
+        color: #ffffff;
+    }
+
+    #track-controls {
+        display: flex;
+        align-items: center;
+        margin-right: 2px;
+    }
+
+    #play-btn,
+    #pause-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: white;
+        stroke-width: 1.5;
+    }
+
+    #play-btn:hover,
+    #pause-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+    }
+
+    #play-btn svg,
+    #pause-btn svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    /* Invertimos la visualización inicial */
+    #play-btn {
+        display: none;
+    }
+
+    #pause-btn {
+        display: flex;
+    }
+
+    #progress-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    #progress-bar {
+        flex-grow: 1;
+        height: 4px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    #progress-current {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0%;
+        background-color: #ffffff;
+        border-radius: 2px;
+        transition: width 0.1s linear;
+    }
+
+    #time-display {
+        font-size: 14px;
+        font-weight: 300;
+        min-width: 50px;
+        text-align: center;
+    }
+
+    @media (min-width: 768px) {
+        #player-content {
+            flex-direction: row;
+            gap: 20px;
+        }
+
+        #track-info {
+            width: 40%;
+        }
+
+        #progress-container {
+            width: 60%;
+        }
+    }
+
+    /* Blur overlay styles */
+    #music-blur-overlay {
+        position: fixed;
+        z-index: 99998;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        pointer-events: auto;
+        transition: opacity 0.3s;
+    }
+
+    #music-blur-overlay.hide {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+    }
+
+    #music-autoplay-prompt {
+        position: fixed;
+        top: 65px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(251, 106, 186, 0.95);
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 20px;
+        font-size: 16px;
+        z-index: 99999;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.13);
+        text-align: center;
+        max-width: 90vw;
+    }
+</style>
+<script>
+    const audioPlayer = new Audio('./assets/music.mp3');
+    audioPlayer.loop = true;
+    let isPlaying = false;
+    let userRejectedMusic = false;
+    let userAcceptedMusic = false;
+
+    // Blur overlay
+    function showBlurOverlay() {
+        if (!document.getElementById('music-blur-overlay')) {
+            const blur = document.createElement('div');
+            blur.id = 'music-blur-overlay';
+            document.body.appendChild(blur);
+        } else {
+            document.getElementById('music-blur-overlay').classList.remove('hide');
+        }
+    }
+
+    function hideBlurOverlay() {
+        const blur = document.getElementById('music-blur-overlay');
+        if (blur) {
+            blur.classList.add('hide');
+            setTimeout(() => {
+                if (blur.parentNode) blur.parentNode.removeChild(blur);
+            }, 350);
+        }
+    }
+
+    // Mostrar el prompt
+    function showMusicPrompt() {
+        if (document.getElementById('music-autoplay-prompt')) return;
+        showBlurOverlay();
+
+        const prompt = document.createElement('div');
+        prompt.id = 'music-autoplay-prompt';
+        prompt.innerHTML = `
+            ¿Quieres experiencia con música? <br><br>
+            <button id="music-yes" style="margin-left:10px;background:#fff;color:#fb6aba;border:none;border-radius:12px;padding:4px 12px;font-weight:bold;cursor:pointer;">Sí</button>
+            <button id="music-no" style="margin-left:5px;background:#fff;color:#fb6aba;border:none;border-radius:12px;padding:4px 12px;font-weight:bold;cursor:pointer;">No</button>
+        `;
+        document.body.appendChild(prompt);
+
+        document.getElementById('music-yes').onclick = function () {
+            userAcceptedMusic = true;
+            tryPlayAudio();
+            prompt.remove();
+            hideBlurOverlay();
+        };
+
+        document.getElementById('music-no').onclick = function () {
+            userRejectedMusic = true;
+            prompt.remove();
+            hideBlurOverlay();
+        };
+    }
+
+    function tryPlayAudio() {
+        if (!userAcceptedMusic || userRejectedMusic) return;
+
+        audioPlayer.play().then(() => {
+            isPlaying = true;
+            document.getElementById('play-btn').style.display = 'none';
+            document.getElementById('pause-btn').style.display = 'flex';
+            updateProgress();
+        }).catch(() => {
+            isPlaying = false;
+            document.getElementById('play-btn').style.display = 'flex';
+            document.getElementById('pause-btn').style.display = 'none';
+        });
+    }
+
+    window.addEventListener('load', function () {
+        showMusicPrompt(); // Mostrar el prompt al cargar la página
+    });
+
+    document.getElementById('play-btn').addEventListener('click', function () {
+        userAcceptedMusic = true;
+        tryPlayAudio();
+    });
+
+    document.getElementById('pause-btn').addEventListener('click', function () {
+        audioPlayer.pause();
+        isPlaying = false;
+        document.getElementById('pause-btn').style.display = 'none';
+        document.getElementById('play-btn').style.display = 'flex';
+    });
+
+    function updateProgress() {
+        if (isPlaying) {
+            const progressBar = document.getElementById('progress-current');
+            const timeDisplay = document.getElementById('time-display');
+            const progressInterval = setInterval(function () {
+                if (!isPlaying) {
+                    clearInterval(progressInterval);
+                    return;
+                }
+                if (audioPlayer.duration) {
+                    const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                    progressBar.style.width = percentage + '%';
+                    const minutes = Math.floor(audioPlayer.currentTime / 60);
+                    const seconds = Math.floor(audioPlayer.currentTime % 60);
+                    timeDisplay.textContent =
+                        (minutes < 10 ? '0' + minutes : minutes) + ':' +
+                        (seconds < 10 ? '0' + seconds : seconds);
+                }
+            }, 100);
+        }
+    }
+
+    document.getElementById('progress-bar').addEventListener('click', function (e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const percentage = x / rect.width;
+
+        if (audioPlayer.duration) {
+            audioPlayer.currentTime = percentage * audioPlayer.duration;
+            document.getElementById('progress-current').style.width = (percentage * 100) + '%';
+            const minutes = Math.floor(audioPlayer.currentTime / 60);
+            const seconds = Math.floor(audioPlayer.currentTime % 60);
+            document.getElementById('time-display').textContent =
+                (minutes < 10 ? '0' + minutes : minutes) + ':' +
+                (seconds < 10 ? '0' + seconds : seconds);
+        }
+    });
+
+    audioPlayer.addEventListener('loadedmetadata', function () {
+        const minutes = Math.floor(audioPlayer.duration / 60);
+        const seconds = Math.floor(audioPlayer.duration % 60);
+        document.getElementById('time-display').textContent =
+            (minutes < 10 ? '0' + minutes : minutes) + ':' +
+            (seconds < 10 ? '0' + seconds : seconds);
+    });
+</script>
+
+
+</html>
