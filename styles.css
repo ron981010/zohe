@@ -122,8 +122,11 @@ body {
 .title {
   font-family: "Waltograph", "Waltograph UI", cursive;
   font-size: 64px;
+  line-height: 1.25;
   color: #b06e06;
   margin-bottom: 10px;
+  padding: 0.08em 0.08em 0.16em;
+  overflow: visible;
 }
 
 .subtitle {
