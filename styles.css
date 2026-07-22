@@ -621,13 +621,8 @@ footer > p {
   margin-bottom: 4px;
 }
 
-.confirmation-required {
+.confirmation-block .confirmation-required {
   margin: 0 0 16px;
-  color: #ca5e6e;
-  font-family: "Roboto", sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
 }
 
 .confirmation-button {
