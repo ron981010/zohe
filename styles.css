@@ -1,5 +1,6 @@
 /* Fuentes y Reset */
-@import url("https://fonts.googleapis.com/css2?family=Cinzel&family=Herr+Von+Muellerhoff&family=Roboto:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cinzel&family=Roboto:wght@300;400&display=swap");
+@import url("https://fonts.cdnfonts.com/css/waltograph");
 
 * {
   margin: 0;
@@ -119,7 +120,7 @@ body {
 
 /* Títulos */
 .title {
-  font-family: "Herr Von Muellerhoff", cursive;
+  font-family: "Waltograph", "Waltograph UI", cursive;
   font-size: 64px;
   color: #b06e06;
   margin-bottom: 10px;
@@ -617,7 +618,16 @@ footer > p {
 }
 
 .confirmation-block .subtitle {
-  margin-bottom: 16px;
+  margin-bottom: 4px;
+}
+
+.confirmation-required {
+  margin: 0 0 16px;
+  color: #ca5e6e;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
 }
 
 .confirmation-button {
